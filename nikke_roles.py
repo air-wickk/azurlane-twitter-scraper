@@ -346,13 +346,19 @@ class NikkeSelect(discord.ui.Select):
         else:
             role_color = discord.Color(0xFFFFFF)
 
+        role = discord.utils.get(guild.roles, name=role_name)
+        if role and role in member.roles:
+            # User already has the role, remove it
+            await member.remove_roles(role)
+            await interaction.response.send_message(f"**{role_name}** has been removed from your roles!", ephemeral=True)
+            return
+
         # Remove any existing Nikke character roles before assigning new one
         nikke_role_names = set(NIKKE_ROLE_INFO.keys())
         roles_to_remove = [r for r in member.roles if r.name in nikke_role_names]
         if roles_to_remove:
             await member.remove_roles(*roles_to_remove)
 
-        role = discord.utils.get(guild.roles, name=role_name)
         if not role:
             role = await guild.create_role(name=role_name, color=role_color, mentionable=False)
             try:
