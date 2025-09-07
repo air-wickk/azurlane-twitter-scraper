@@ -62,26 +62,23 @@ last_tweet_url = None
 sent_tweet_ids = load_sent_tweet_ids()  # deque with maximum length of 25
 tweet_message_map = load_tweet_message_map()  # {tweet_id: discord_message_id}
 
-shifty_statuses = [
-    "analysis of the Commander's data",
-    "scans for raptures",
-    "over classified files",
-    "Central Government feeds",
-    "tutorials on squad tactics",
-    "diagnostics run",
-    "the Outpost's security feeds",
-    "the Ark's mainframe logs",
-    "suspicious activity in the Ark",
-    "squad formation tutorials",
-    "encrypted transmissions",
-    "mission briefings",
-    "for rapture threats",
-    "for anomalies in the system",
-    "for Pilgrim transmissions.",
-    "the Outpost's coffee machine",
-    "the Ark's communication channels",
-    "videos on Blabla",
-    "Tetra's Got Talent",
+akashi_statuses = [
+    "the Commander's spending habits, nya~",
+    "market trends for rare retrofit materials",
+    "for blueprints for profit opportunities!",
+    "for surplus stock in the depot, nya",
+    "the commissions board for new deals",
+    "the shop!",
+    "fleet maintenance logs, nya",
+    "over the tech boxes...",
+    "the HQ budget report...",
+    "the docks for potential customers",
+    "inventory levels on high-demand items",
+    "your gem stash!",
+    "fleet activity... for future invoices",
+    "supply routes for profits!",
+    "over Sakura Empire’s trade agreements",
+    "sales graphs going up, nya!",
 ]
 
 # Set up logging
@@ -92,7 +89,7 @@ logging.basicConfig(
 
 @tasks.loop(minutes=5)
 async def change_status():
-    status = random.choice(shifty_statuses)
+    status = random.choice(akashi_statuses)
     await bot.change_presence(activity=Activity(type=ActivityType.watching, name=status))
 
 @bot.event
@@ -107,9 +104,6 @@ async def on_ready():
     if not hasattr(bot, "cogs_loaded"):
         await bot.load_extension("suggestions")
         await bot.load_extension("ownersync")
-        await bot.load_extension("joincode")
-        await bot.load_extension("createrole")
-        await bot.load_extension("nikke_roles")
         bot.cogs_loaded = True
 
     check_tweets.start()
